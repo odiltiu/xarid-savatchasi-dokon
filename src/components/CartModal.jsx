@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { useCart } from '../Context/CartContext';
+import { useCart, maxQuantity } from '../Context/CartContext';
 
 export default function CartModal({ isOpen, onClose }) {
   const { cart, dispatch, totalPrice, totalItems } = useCart();
@@ -31,6 +31,9 @@ export default function CartModal({ isOpen, onClose }) {
 
       {/* Modal Dialog */}
       <div
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="cart-title"
         className="relative z-10 w-full max-w-2xl bg-white rounded-3xl shadow-2xl border border-gray-100 flex flex-col max-h-[90vh] overflow-hidden text-left"
         onClick={(e) => e.stopPropagation()}
       >
@@ -53,7 +56,7 @@ export default function CartModal({ isOpen, onClose }) {
                 </svg>
               </div>
               <div>
-                <h3 className="text-xl font-bold text-gray-900">Savatcha</h3>
+                <h3 id="cart-title" className="text-xl font-bold text-gray-900">Savatcha</h3>
                 <p className="text-xs text-gray-500">
                   {totalItems > 0
                     ? `${totalItems} ta mahsulot tanlangan`
@@ -65,6 +68,8 @@ export default function CartModal({ isOpen, onClose }) {
             <button
               onClick={onClose}
               type="button"
+              aria-label="Savatni yopish"
+              autoFocus
               className="p-2 rounded-xl text-gray-400 hover:text-gray-600 hover:bg-gray-100 transition-colors cursor-pointer"
             >
               <svg
@@ -156,8 +161,9 @@ export default function CartModal({ isOpen, onClose }) {
                           })
                         }
                         type="button"
-                        className="w-8 h-8 rounded-lg bg-gray-100 hover:bg-gray-200 text-gray-700 flex items-center justify-center font-bold transition-colors cursor-pointer"
+                        className="w-8 h-8 rounded-lg bg-gray-100 hover:bg-gray-200 text-gray-700 flex items-center justify-center font-bold transition-colors cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed"
                         title="Kamaytirish"
+                        aria-label={`${item.title} sonini kamaytirish`}
                       >
                         -
                       </button>
@@ -171,8 +177,10 @@ export default function CartModal({ isOpen, onClose }) {
                             payload: item.id,
                           })
                         }
+                        disabled={item.quantity >= maxQuantity(item)}
+                        aria-label={`${item.title} sonini ko'paytirish`}
                         type="button"
-                        className="w-8 h-8 rounded-lg bg-gray-100 hover:bg-gray-200 text-gray-700 flex items-center justify-center font-bold transition-colors cursor-pointer"
+                        className="w-8 h-8 rounded-lg bg-gray-100 hover:bg-gray-200 text-gray-700 flex items-center justify-center font-bold transition-colors cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed"
                         title="Ko'paytirish"
                       >
                         +
