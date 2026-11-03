@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useCart } from '../Context/CartContext';
+import { useCart, maxQuantity } from '../Context/CartContext';
 import { localProducts } from '../data/products';
 
 const TECH_CATEGORIES = ['smartphones', 'laptops', 'tablets', 'mobile-accessories'];
@@ -364,7 +364,9 @@ export default function ProductList() {
                           dispatch({ type: 'ADD_TO_CART', payload: product })
                         }
                         type="button"
-                        className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-700 active:scale-95 text-white font-medium text-xs transition-all shadow-sm shadow-indigo-200 cursor-pointer whitespace-nowrap"
+                        disabled={getProductQuantity(product.id) >= maxQuantity(product)}
+                        title={getProductQuantity(product.id) >= maxQuantity(product) ? "Ombordagi barcha nusxa savatda" : undefined}
+                        className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-700 active:scale-95 text-white font-medium text-xs transition-all shadow-sm shadow-indigo-200 cursor-pointer whitespace-nowrap disabled:cursor-not-allowed disabled:opacity-50 disabled:active:scale-100"
                       >
                         <svg
                           className="w-4 h-4"
